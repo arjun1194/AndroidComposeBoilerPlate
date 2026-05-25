@@ -8,6 +8,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.Dispatchers
+
 class ItemRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val itemDao: ItemDao
@@ -19,13 +22,14 @@ class ItemRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun refreshItems() {
+    override suspend fun refreshItems() = withContext(Dispatchers.IO) {
         try {
             val remoteItems = apiService.fetchItems()
             itemDao.insertItems(remoteItems.map { it.toEntity() })
         } catch (e: Exception) {
             // Error handling can be enhanced using a Result wrapper
             e.printStackTrace()
+            throw e
         }
     }
 }

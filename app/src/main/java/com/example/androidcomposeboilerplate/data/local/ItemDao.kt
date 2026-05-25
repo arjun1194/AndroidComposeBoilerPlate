@@ -12,8 +12,8 @@ interface ItemDao {
     fun getItems(): Flow<List<ItemEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertItems(items: List<ItemEntity>)
+    fun insertItems(items: List<ItemEntity>)
 
     @Query("DELETE FROM items")
-    suspend fun clearItems()
+    fun clearItems()
 }
