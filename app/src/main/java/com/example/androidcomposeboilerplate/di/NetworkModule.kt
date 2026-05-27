@@ -1,6 +1,6 @@
 package com.example.androidcomposeboilerplate.di
 
-import com.example.androidcomposeboilerplate.data.remote.ApiService
+import com.example.androidcomposeboilerplate.data.remote.UnsplashApiService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -38,7 +38,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://mock.api.endpoint/")
+            .baseUrl(UnsplashApiService.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
@@ -46,7 +46,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideApiService(retrofit: Retrofit): ApiService {
-        return retrofit.create(ApiService::class.java)
+    fun provideApiService(retrofit: Retrofit): UnsplashApiService {
+        return retrofit.create(UnsplashApiService::class.java)
     }
 }
